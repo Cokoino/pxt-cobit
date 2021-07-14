@@ -15,9 +15,9 @@ enum RGBNUM {
     No4 = 0x03
 }
 enum COLOR {
-    Red = 0x00,
+    Red   = 0x00,
     Green = 0x01,
-    Blue = 0x02,
+    Blue  = 0x02,
     White = 0x03,
     Black = 0x04
 }
@@ -25,40 +25,40 @@ enum COLOR {
 //use for control car
 enum CarDirection {
     RunForward = 0x00,
-    RunBack = 0x01,
-    TurnLeft = 0x02,
-    TurnRight = 0x03
+    RunBack    = 0x01,
+    TurnLeft   = 0x02,
+    TurnRight  = 0x03
 }
 enum FB {
     Forward = 0x00,
-    Back = 0x01
+    Back    = 0x01
 }
 
 //use for control wheels
 enum CarWheelDirection {
-    CW = 0x00,
+    CW  = 0x00,
     CCW = 0x01
 }
 enum CarWheelMode {
-    Step = 0x00,
+    Step     = 0x00,
     Continue = 0x01
 }
 
 //use for control car and wheels.
 enum CarWheelState {
-    Stop = 0x00,
+    Stop  = 0x00,
     Brake = 0x01
 }
 
 //Use for wheels,headlight and PH.
 enum Side {
-    Left = 0x00,
+    Left  = 0x00,
     Right = 0x01
 }
 
 //Use for buzzer,servo and sonar.
 enum ON_OFF {
-    ON = 0x00,
+    ON  = 0x00,
     OFF = 0x01
 }
 
@@ -71,9 +71,9 @@ enum SERVOPIN {
 
 //use for port
 enum ALLPIN {
-    A0 = 0x00,
-    A1 = 0x01,
-    A2 = 0x02,
+    A0  = 0x00,
+    A1  = 0x01,
+    A2  = 0x02,
     D12 = 0x03,
     D13 = 0x04
 }
@@ -83,12 +83,12 @@ enum ANALOGPIN {
     A2 = 0x02
 }
 enum PINMODE {
-    INPUT = 0x00,
+    INPUT  = 0x00,
     OUTPUT = 0x01
 }
 enum Level {
     HIGH = 0x00,
-    LOW = 0x01
+    LOW  = 0x01
 }
 
 //% color="#ff6800" icon="\uf1b9" weight=15
@@ -145,8 +145,8 @@ namespace Cobit {
     const BuzzerVolume : string     =      "022";
     const LeftWheelBrake : string   =      "023";
     const RightWheelBrake : string  =      "024";
-    const HeadlightON : string      =      "025";
-    const HeadlightOFF : string     =      "026";
+    const xxxxxxxxxxx : string      =      "025";
+    const xxxxxxxxxxx : string      =      "026";
     const RGB1 : string             =      "027";
     const RGB2 : string             =      "028";
     const RGB3 : string             =      "029";
@@ -373,30 +373,39 @@ namespace Cobit {
 
     //  Set wheel travels distance --> Only use in step mode.
     //% block="Wheel $S run $D mm (step)"
+    //% D.min=0 D.max=30000
     //% group="Wheels" weight=85
     export function WheelTravelsDistance(S: Side, D: number) {
-        let step: number;
-        step = D / 0.51025;
         let cmd: string;
         if (S == Side.Left) {          //left side
-            cmd = "S000015" + NumToStr(step, 3) + "000000P";
+            cmd = "S000015" + NumToStr(D, 6) + "000P";
             WriteCMD(cmd);
         }
         if (S == Side.Right) {         //right side
-            cmd = "S001016" + NumToStr(step, 3) + "000000P";
+            cmd = "S001016" + NumToStr(D, 6) + "000P";
             WriteCMD(cmd);
         }
     }
 
     //  Set wheel state
-    //% block="Wheel $S brake"
+    //% block="Wheel $S $State"
     //% group="Wheels" weight=84
-    export function wheelState(S: Side) {
+    export function wheelState(S: Side, State: CarWheelState) {
         if (S == Side.Left) {          //left side
-            WriteCMD("S000023000000000P");
+            if(CarWheelState.Stop){
+                WriteCMD("S000013000000000P");
+            }
+            if(CarWheelState.Brake){
+                WriteCMD("S000023000000000P");
+            } 
         }
         if (S == Side.Right) {         //right side
-            WriteCMD("S001024000000000P");
+            if (CarWheelState.Stop) {
+                WriteCMD("S001014000000000P");
+            }
+            if (CarWheelState.Brake) {
+                WriteCMD("S001024000000000P");
+            }
         }
     }
 
@@ -465,10 +474,10 @@ namespace Cobit {
     //% group="Servo" weight=73
     export function servoOnOFF(SW: ON_OFF) {
         if (SW == ON_OFF.ON) {          //on
-            WriteCMD("S-004-007-000-000-000-P");
+            WriteCMD("S004007000000000P");
         }
         if (SW == ON_OFF.OFF) {         //off
-            WriteCMD("S-004-0010-000-000-000-P");
+            WriteCMD("S0040010000000000P");
         }
     }
 
@@ -497,18 +506,18 @@ namespace Cobit {
     export function headLightOnOFF(S: Side, SW: ON_OFF) {
         if (S == Side.Left) {               //left
             if (SW == ON_OFF.ON) {        //on
-                WriteCMD("S006000000000000P");
+                WriteCMD("S006001000000000P");
             }
             if (SW == ON_OFF.OFF) {        //off
-                WriteCMD("S006001000000000P");
+                WriteCMD("S006000000000000P");
             }
         }
         if (S == Side.Right) {               //right
             if (SW == ON_OFF.ON) {        //on
-                WriteCMD("S007000000000000P");
+                WriteCMD("S007001000000000P");
             }
             if (SW == ON_OFF.OFF) {        //off
-                WriteCMD("S007001000000000P");
+                WriteCMD("S007000000000000P");
             }
         }
     }
@@ -705,8 +714,8 @@ namespace Cobit {
     //% block="AnalogWrite D13 $Num"
     //% Num.min=0 Num.max=255
     //% group="Port" weight=61
-    export function analogWrite(num: number) {
-        WriteCMD("S018036034" + NumToStr(num, 3) + "000P");
+    export function analogWrite(Num: number) {
+        WriteCMD("S018036034" + NumToStr(Num, 3) + "000P");
     }
 
     //  Get digital value of pin
