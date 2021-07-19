@@ -139,9 +139,9 @@ namespace Cobit {
     const RightWheelStep : string   =      "016";
     const LeftWheelMode : string    =      "017";
     const RightWheelMode : string   =      "018";
-    const Servo1 : string           =      "019";
+    const Servo3 : string           =      "019";
     const Servo2 : string           =      "020";
-    const Servo3 : string           =      "021";
+    const Servo1 : string           =      "021";
     const BuzzerVolume : string     =      "022";
     const LeftWheelBrake : string   =      "023";
     const RightWheelBrake : string  =      "024";
@@ -223,10 +223,10 @@ namespace Cobit {
         serial.redirect(SerialPin.P0, SerialPin.P1, BaudRate.BaudRate115200);
 
         //Sets the length of the serial reception buffer in bytes.
-        serial.setRxBufferSize(16);
+        //serial.setRxBufferSize(16);
 
         //Sets the length of the serial transmission buffer in bytes.
-        serial.setTxBufferSize(16);
+        //serial.setTxBufferSize(16);
     }
 
     /////////////////////////////////////////////////////Reset all parts
@@ -488,13 +488,13 @@ namespace Cobit {
     export function Servo(channel: SERVOPIN, degree: number) {
         let cmd: string;
         if (channel == SERVOPIN.S1) {         //S1
-            cmd = "S004019" + NumToStr(degree, 3) + "000000P";
+            cmd = "S004021" + NumToStr(degree, 3) + "000000P";
         }
         if (channel == SERVOPIN.S2) {         //S2
             cmd = "S004020" + NumToStr(degree, 3) + "000000P";
         }
         if (channel == SERVOPIN.S3) {         //S3
-            cmd = "S004021" + NumToStr(degree, 3) + "000000P";
+            cmd = "S004019" + NumToStr(degree, 3) + "000000P";
         }
         WriteCMD(cmd);
     }
