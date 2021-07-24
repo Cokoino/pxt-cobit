@@ -387,7 +387,7 @@ namespace Cobit {
 
     //  Set volume of buzzer.
     //% block="BuzzerVolume $V"
-    //% V.min=0 V.max=10
+    //% V.min=0 V.max=9
     //% group="Buzzer" weight=74
     export function volume(V: number) {
         let cmd: string = "S103119" + NumToStr(V, 3) + "P";
