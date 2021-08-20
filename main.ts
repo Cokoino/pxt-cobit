@@ -27,7 +27,6 @@ const D13 : string                =    "119";
 const Car_ : string               =    "120";
 const Font: string                =    "121";
 const IRremote: string            =    "122";
-
 */
 
 /********Data(master)********/
@@ -146,8 +145,53 @@ enum Level {
     LOW = "100"
 }
 
+const enum IrButton {
+    //% block=" "
+    Any = -1,
+    //% block="▲"
+    Up = 10,
+    //% block=" "
+    Unused_2 = -2,
+    //% block="◀"
+    Left = 12,
+    //% block="OK"
+    Ok = 14,
+    //% block="▶"
+    Right = 13,
+    //% block=" "
+    Unused_3 = -3,
+    //% block="▼"
+    Down = 11,
+    //% block=" "
+    Unused_4 = -4,
+    //% block="1"
+    Number_1 = 1,
+    //% block="2"
+    Number_2 = 2,
+    //% block="3"
+    Number_3 = 3,
+    //% block="4"
+    Number_4 = 4,
+    //% block="5"
+    Number_5 = 5,
+    //% block="6"
+    Number_6 = 6,
+    //% block="7"
+    Number_7 = 7,
+    //% block="8"
+    Number_8 = 8,
+    //% block="9"
+    Number_9 = 9,
+    //% block="*"
+    Star = 66,
+    //% block="0"
+    Number_0 = 0,
+    //% block="#"
+    Hash = 15
+}
+
 //% color="#ff6800" icon="\uf1b9" weight=15
-//% groups="['Car', 'Wheels', 'Sonar', 'Buzzer', 'Servo', 'HeadLight', 'PR', 'LineDetection', 'RGB', 'Voltmeter', 'Port']"
+//% groups="['Car', 'Wheels', 'Sonar', 'IRremote', 'Buzzer', 'Servo', 'HeadLight', 'PR', 'LineDetection', 'RGB', 'Voltmeter', 'Port']"
 namespace Cobit {
 
     //  start(S) + sensor(000) + data(000) + ... + stop(P)
@@ -354,14 +398,14 @@ namespace Cobit {
     /////////////////////////////////////////////////////Sonar
     //  Turn sonar on or off.
     //% block="Sonar $SW"
-    //% group="Sonar" weight=79
+    //% group="Sonar" weight=83
     export function sonarOnOFF(SW: ON_OFF) {
         WriteCMD("S102" + SW + "P");
     }
 
     //  Return sonar data.
     //% block="Sonar measure CM"
-    //% group="Sonar" weight=78
+    //% group="Sonar" weight=82
     export function SonarMeasure(): number {
         let str: string;
         str = ReadData("S102107P");
@@ -370,6 +414,30 @@ namespace Cobit {
         return data;
     }
 
+
+    /////////////////////////////////////////////////////IRremote
+    //  Turn value of IR.
+    //% block="IR Value"
+    //% group="IRremote" weight=79
+    export function IRvalue(): number {
+        let str: string;
+        str = ReadData("S122128P");
+        //substr(start,length)
+        let data: number = parseInt(str.substr(0, 3), 10);
+        return data;
+    }
+	
+    //  Returns the command code of a specific IR button.
+    //% blockId=infrared_button
+    //% button.fieldEditor="gridpicker"
+    //% button.fieldOptions.columns=3
+    //% button.fieldOptions.tooltips="false"
+    //% block="IR button %button"
+    //% group="IRremote" weight=78
+    export function irButton(button: IrButton): number {
+        return button as number;
+    }
+	
     /////////////////////////////////////////////////////Buzzer
     //  Turn buzzer on or off.
     //% block="Buzzer $SW"
