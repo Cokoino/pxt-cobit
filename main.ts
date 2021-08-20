@@ -183,11 +183,11 @@ const enum IrButton {
     //% block="9"
     Number_9 = 9,
     //% block="*"
-    Star = 66,
+    Star = 15,
     //% block="0"
     Number_0 = 0,
     //% block="#"
-    Hash = 15
+    Hash = 16
 }
 
 //% color="#ff6800" icon="\uf1b9" weight=15
