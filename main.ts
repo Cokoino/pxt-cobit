@@ -428,7 +428,6 @@ namespace Cobit {
     }
 	
     //  Returns the command code of a specific IR button.
-    //% blockId=infrared_button
     //% button.fieldEditor="gridpicker"
     //% button.fieldOptions.columns=3
     //% button.fieldOptions.tooltips="false"
