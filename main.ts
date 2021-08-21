@@ -144,7 +144,7 @@ enum Level {
     HIGH = "101",
     LOW = "100"
 }
-/*
+
 const enum IrButton {
     //% block=" "
     Any = -1,
@@ -189,7 +189,7 @@ const enum IrButton {
     //% block="#"
     Hash = 16
 }
-*/
+
 //% color="#ff6800" icon="\uf1b9" weight=15
 //% groups="['Car', 'Wheels', 'Sonar', 'IRremote', 'Buzzer', 'Servo', 'HeadLight', 'PR', 'LineDetection', 'RGB', 'Voltmeter', 'Port']"
 namespace Cobit {
@@ -426,7 +426,7 @@ namespace Cobit {
         let data: number = parseInt(str.substr(0, 3), 10);
         return data;
     }
-	/*
+	
     //  Returns the command code of a specific IR button.
     //% button.fieldEditor="gridpicker"
     //% button.fieldOptions.columns=3
@@ -436,7 +436,7 @@ namespace Cobit {
     export function irButton(button: IrButton): number {
         return button as number;
     }
-	*/
+	
     /////////////////////////////////////////////////////Buzzer
     //  Turn buzzer on or off.
     //% block="Buzzer $SW"
