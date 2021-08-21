@@ -426,7 +426,7 @@ namespace Cobit {
         let data: number = parseInt(str.substr(0, 3), 10);
         return data;
     }
-	
+	/*
     //  Returns the command code of a specific IR button.
     //% button.fieldEditor="gridpicker"
     //% button.fieldOptions.columns=3
@@ -436,7 +436,7 @@ namespace Cobit {
     export function irButton(button: IrButton): number {
         return button as number;
     }
-	
+	*/
     /////////////////////////////////////////////////////Buzzer
     //  Turn buzzer on or off.
     //% block="Buzzer $SW"
