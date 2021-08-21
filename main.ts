@@ -144,7 +144,7 @@ enum Level {
     HIGH = "101",
     LOW = "100"
 }
-
+/*
 const enum IrButton {
     //% block=" "
     Any = -1,
@@ -189,7 +189,7 @@ const enum IrButton {
     //% block="#"
     Hash = 16
 }
-
+*/
 //% color="#ff6800" icon="\uf1b9" weight=15
 //% groups="['Car', 'Wheels', 'Sonar', 'IRremote', 'Buzzer', 'Servo', 'HeadLight', 'PR', 'LineDetection', 'RGB', 'Voltmeter', 'Port']"
 namespace Cobit {
