@@ -418,7 +418,7 @@ namespace Cobit {
     /////////////////////////////////////////////////////IRremote
     //  Turn value of IR.
     //% block="IR Value"
-    //% group="IRremote" weight=79
+    //% group="IRremote" weight=80
     export function IRvalue(): number {
         let str: string;
         str = ReadData("S122128P");
@@ -432,7 +432,7 @@ namespace Cobit {
     //% button.fieldOptions.columns=3
     //% button.fieldOptions.tooltips="false"
     //% block="IR button %button"
-    //% group="IRremote" weight=78
+    //% group="IRremote" weight=79
     export function irButton(button: IrButton): number {
         return button as number;
     }
@@ -440,7 +440,7 @@ namespace Cobit {
     /////////////////////////////////////////////////////Buzzer
     //  Turn buzzer on or off.
     //% block="Buzzer $SW"
-    //% group="Buzzer" weight=76
+    //% group="Buzzer" weight=78
     export function buzzerOnOFF(SW: ON_OFF) {
         WriteCMD("S103" + SW + "P");
     }
@@ -448,7 +448,7 @@ namespace Cobit {
     //  Set frequency of buzzer.
     //% block="BuzzerFrequency $Hz Hz"
     //% Hz.min=20 Hz.max=2000
-    //% group="Buzzer" weight=75
+    //% group="Buzzer" weight=77
     export function buzzerHz(Hz: number) {
         let cmd: string = "S103118" + NumToStr(Hz, 6) + "P";
         WriteCMD(cmd);
@@ -457,7 +457,7 @@ namespace Cobit {
     //  Set volume of buzzer.
     //% block="BuzzerVolume $V"
     //% V.min=0 V.max=9
-    //% group="Buzzer" weight=74
+    //% group="Buzzer" weight=76
     export function volume(V: number) {
         let cmd: string = "S103119" + NumToStr(V, 3) + "P";
         WriteCMD(cmd);
@@ -466,7 +466,7 @@ namespace Cobit {
     /////////////////////////////////////////////////////Servo
     //  Turn servo on or off.
     //% block="All servo $SW"
-    //% group="Servo" weight=73
+    //% group="Servo" weight=75
     export function servoOnOFF(SW: ON_OFF) {
         WriteCMD("S104" + SW + "P");
     }
@@ -474,7 +474,7 @@ namespace Cobit {
     //  Set servo anagle
     //% block="Servo channel|%channel|turn %degree °"
     //% degree.min=0 degree.max=180
-    //% group="Servo" weight=72
+    //% group="Servo" weight=74
     export function Servo(channel: SERVOPIN, degree: number) {
         WriteCMD("S104" + channel + NumToStr(degree, 3) + "P");
     }
@@ -482,13 +482,26 @@ namespace Cobit {
     /////////////////////////////////////////////////////HeadLight
     //  Turn HeadLight on or off.
     //% block="HeadLight $S $SW"
-    //% group="Headlight" weight=71
+    //% group="Headlight" weight=73
     export function headLightOnOFF(S: Side, SW: ON_OFF) {
         if (S == Side.Left) {                //left headlight
             WriteCMD("S106" + SW + "P");
         }
         if (S == Side.Right) {               //right headlight
             WriteCMD("S107" + SW + "P");
+        }
+    }
+	
+    //  Set HeadLight brightness.
+    //% block="HeadLightBrightness $S $B"
+	//% B.min=0 B.max=255
+    //% group="Headlight" weight=72
+    export function headLightBrightness(S: Side, B: number) {
+        if (S == Side.Left) {                //left headlight
+            WriteCMD("S106" + Analog + NumToStr(B, 3) + "P");
+        }
+        if (S == Side.Right) {               //right headlight
+            WriteCMD("S107" + Analog + NumToStr(B, 3) + "P");
         }
     }
 
