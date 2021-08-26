@@ -498,10 +498,10 @@ namespace Cobit {
     //% group="Headlight" weight=72
     export function headLightBrightness(S: Side, B: number) {
         if (S == Side.Left) {                //left headlight
-            WriteCMD("S106" + Analog + NumToStr(B, 3) + "P");
+            WriteCMD("S106131" + NumToStr(B, 3) + "P");
         }
         if (S == Side.Right) {               //right headlight
-            WriteCMD("S107" + Analog + NumToStr(B, 3) + "P");
+            WriteCMD("S107131" + NumToStr(B, 3) + "P");
         }
     }
 
