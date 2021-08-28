@@ -146,24 +146,6 @@ enum Level {
 }
 
 const enum IrButton {
-    //% block=" "
-    Any = -1,
-    //% block="▲"
-    Up = 10,
-    //% block=" "
-    Unused_2 = -2,
-    //% block="◀"
-    Left = 12,
-    //% block="OK"
-    Ok = 14,
-    //% block="▶"
-    Right = 13,
-    //% block=" "
-    Unused_3 = -3,
-    //% block="▼"
-    Down = 11,
-    //% block=" "
-    Unused_4 = -4,
     //% block="1"
     Number_1 = 1,
     //% block="2"
@@ -187,7 +169,25 @@ const enum IrButton {
     //% block="0"
     Number_0 = 0,
     //% block="#"
-    Hash = 16
+    Hash = 16,
+    //% block=" "
+    Any = -1,
+    //% block="▲"
+    Up = 10,
+    //% block=" "
+    Unused_2 = -2,
+    //% block="◀"
+    Left = 12,
+    //% block="OK"
+    Ok = 14,
+    //% block="▶"
+    Right = 13,
+    //% block=" "
+    Unused_3 = -3,
+    //% block="▼"
+    Down = 11,
+    //% block=" "
+    Unused_4 = -4
 }
 
 //% color="#ff6800" icon="\uf1b9" weight=15
@@ -252,7 +252,7 @@ namespace Cobit {
     /////////////////////////////////////////////////////Init microbit
     //  Init microbit
     //% block="Init device"
-    //% group="" weight=101
+    //% group="" weight=103
     export function init_() {
         // init serial port. tx=P0  rx=P1
         serial.redirect(SerialPin.P0, SerialPin.P1, BaudRate.BaudRate115200);
@@ -265,7 +265,7 @@ namespace Cobit {
         //reset N76E003 IC, Reset mote,servo,buzzer
         WriteCMD("S105P");
     }
-
+	
     /////////////////////////////////////////////////////Car
     //  Car write character
     //% block="Car write a char $Str size $Size"
@@ -308,10 +308,43 @@ namespace Cobit {
         WriteCMD("S120" + D + NumToStr(Angle, 3) + NumToStr(Speed, 3) + "P");
     }
 
+    //  Car delay for distance.
+	//	3.14*65/(360/0.9)=0.51025mm
+    //% block="CarDelay distance $Distance speed $Speed(step)"
+    //% Speed.min=0 Speed.max=4
+    //% group="Car" weight=95
+    export function CarDelayDistance(Distance: number, Speed: number) {
+		switch(Speed){
+		case 0: break;
+		case 1: basic.pause(10*Distance/0.5/0.8);   break;     //0.8 is the compensation delay.
+		case 2: basic.pause(5*Distance/0.5/0.8);    break;
+		case 3: basic.pause(2.5*Distance/0.5/0.8);  break;
+		case 4: basic.pause(1.25*Distance/0.5/0.8); break;
+		default:break;
+		}
+    }
+
+    //  Car delay for degree.
+	//	The distance between the two wheels is 96mm. circumference = 96*3.14 = 301.44mm 
+	//	The circumference of each degree is 301.44/360 = 0.83733mm. accuracy = 0.51025/0.83733 = 0.609 degree.
+    //% block="CarDelay degree $Degree speed $Speed"
+    //% Degree.min=0 Degree.max=360 Speed.min=0 Speed.max=4
+    //% group="Car" weight=94
+    export function CarDelayDegree(Degree: number, Speed: number) {
+		switch(Speed){
+		case 0: break;
+		case 1: basic.pause(Degree/0.45*10);   break;       //0.45 is the compensation delay.
+		case 2: basic.pause(Degree/0.45*5);    break;
+		case 3: basic.pause(Degree/0.45*2.5);  break;
+		case 4: basic.pause(Degree/0.45*1.25); break;
+		default:break;
+		}
+    }
+	
     /////////////////////////////////////////////////////Wheels
     //  Set wheel mode
     //% block="Wheel $S mode $Mode"
-    //% group="Wheels" weight=89
+    //% group="Wheels" weight=90
     export function wheelMode(S: Side, Mode: CarWheelMode) {
         if (S == Side.Left) {                    //left side
             WriteCMD("S100" + Mode + "P");
@@ -323,7 +356,7 @@ namespace Cobit {
 
     //  Set wheel direction
     //% block="Wheel $S turn $WD"
-    //% group="Wheels" weight=88
+    //% group="Wheels" weight=89
     export function wheelDirection(S: Side, WD: CarWheelDirection) {
         if (S == Side.Left) {                 //left side
             WriteCMD("S100" + WD + "P");
@@ -336,7 +369,7 @@ namespace Cobit {
     //  Set wheel speed
     //% block="Wheel $S speed $Speed"
     //% Speed.min=0 Speed.max=4
-    //% group="Wheels" weight=87
+    //% group="Wheels" weight=88
     export function wheelSpeed(S: Side, Speed: number) {
         let cmd: string;
         if (S == Side.Left) {          //left side
@@ -352,7 +385,7 @@ namespace Cobit {
     //  Set wheel turn angle --> Only use in step mode.
     //% block="Wheel $S turn $Angle ° (step)"
     //% Angle.min=0 Angle.max=360
-    //% group="Wheels" weight=86
+    //% group="Wheels" weight=87
     export function WheelAngle(S: Side, Angle: number) {
         let step: number;
         step = Angle / 0.9;
@@ -370,7 +403,7 @@ namespace Cobit {
     //  Set wheel travels distance --> Only use in step mode.
     //% block="Wheel $S run $D mm (step)"
     //% D.min=0 D.max=30000
-    //% group="Wheels" weight=85
+    //% group="Wheels" weight=86
     export function WheelTravelsDistance(S: Side, D: number) {
         //wheel diameter:65mm, Stepper motor stepping Angle:0.9
         //0.5105 = (3.1415926*65)/(360/0.9)
@@ -385,7 +418,7 @@ namespace Cobit {
 
     //  Set wheel state
     //% block="Wheel $S $State"
-    //% group="Wheels" weight=84
+    //% group="Wheels" weight=85
     export function wheelState(S: Side, State: CarWheelState) {
         if (S == Side.Left) {          //left side
             WriteCMD("S100" + State + "P");
@@ -395,17 +428,48 @@ namespace Cobit {
         }
     }
 
+    //  Wheel delay for distance.
+	//	3.14*65/(360/0.9)=0.51025mm
+    //% block="WheelDelay distance $Distance speed $Speed(step)"
+    //% Speed.min=0 Speed.max=4
+    //% group="Car" weight=84
+    export function wheelDelayDistance(Distance: number, Speed: number) {
+		switch(Speed){
+		case 0: break;
+		case 1: basic.pause(10*Distance/0.5/0.8);   break;     //0.8 is the compensation delay.
+		case 2: basic.pause(5*Distance/0.5/0.8);    break;
+		case 3: basic.pause(2.5*Distance/0.5/0.8);  break;
+		case 4: basic.pause(1.25*Distance/0.5/0.8); break;
+		default:break;
+		}
+    }
+
+    //  Wheel delay for degree.
+    //% block="WheelDelay degree $Degree speed $Speed"
+    //% Degree.min=0 Degree.max=360 Speed.min=0 Speed.max=4
+    //% group="Car" weight=83
+    export function wheelDelayDegree(Degree: number, Speed: number) {
+		switch(Speed){
+		case 0: break;
+		case 1: basic.pause(10*Degree/0.9/0.8);   break;       //0.8 is the compensation delay.
+		case 2: basic.pause(5*Degree/0.9/0.8);    break;
+		case 3: basic.pause(2.5*Degree/0.9/0.8);  break;
+		case 4: basic.pause(1.25*Degree/0.9/0.8); break;
+		default:break;
+		}
+    }
+	
     /////////////////////////////////////////////////////Sonar
     //  Turn sonar on or off.
     //% block="Sonar $SW"
-    //% group="Sonar" weight=83
+    //% group="Sonar" weight=82
     export function sonarOnOFF(SW: ON_OFF) {
         WriteCMD("S102" + SW + "P");
     }
 
     //  Return sonar data.
     //% block="Sonar measure CM"
-    //% group="Sonar" weight=82
+    //% group="Sonar" weight=81
     export function SonarMeasure(): number {
         let str: string;
         str = ReadData("S102107P");
@@ -413,7 +477,6 @@ namespace Cobit {
         let data: number = parseInt(str.substr(0, 3), 10);
         return data;
     }
-
 
     /////////////////////////////////////////////////////IRremote
     //  Turn value of IR.
