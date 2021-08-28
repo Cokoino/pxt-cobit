@@ -510,7 +510,7 @@ namespace Cobit {
 
     //  Set frequency of buzzer.
     //% block="BuzzerFrequency $Hz Hz"
-    //% Hz.min=20 Hz.max=2000
+    //% Hz.min=20 Hz.max=1000
     //% group="Buzzer" weight=77
     export function buzzerHz(Hz: number) {
         let cmd: string = "S103118" + NumToStr(Hz, 6) + "P";
