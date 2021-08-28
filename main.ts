@@ -432,7 +432,7 @@ namespace Cobit {
 	//	3.14*65/(360/0.9)=0.51025mm
     //% block="WheelDelay distance $Distance speed $Speed(step)"
     //% Speed.min=0 Speed.max=4
-    //% group="Car" weight=84
+    //% group="Wheels" weight=84
     export function wheelDelayDistance(Distance: number, Speed: number) {
 		switch(Speed){
 		case 0: break;
@@ -447,7 +447,7 @@ namespace Cobit {
     //  Wheel delay for degree.
     //% block="WheelDelay degree $Degree speed $Speed"
     //% Degree.min=0 Degree.max=360 Speed.min=0 Speed.max=4
-    //% group="Car" weight=83
+    //% group="Wheels" weight=83
     export function wheelDelayDegree(Degree: number, Speed: number) {
 		switch(Speed){
 		case 0: break;
