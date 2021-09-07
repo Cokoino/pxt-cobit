@@ -255,7 +255,7 @@ namespace Cobit {
     //% group="" weight=103
     export function init_() {
         // init serial port. tx=P0  rx=P1
-        serial.redirect(SerialPin.P0, SerialPin.P1, BaudRate.BaudRate115200);
+        serial.redirect(SerialPin.P0, SerialPin.P1, BaudRate.BaudRate9600);
 
         //Sets the length of the serial reception buffer in bytes.
         //serial.setRxBufferSize(16);
