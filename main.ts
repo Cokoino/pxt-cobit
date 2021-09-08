@@ -204,7 +204,7 @@ namespace Cobit {
         let tempStr: string = "     ";
         while (tempStr[0] != 'S' && tempStr[1] != 'P' && i < 10) {
             serial.writeString(cmd);
-            basic.pause(10)
+            basic.pause(10*(i+1))
             tempStr = serial.readString();
             i++;
         }
@@ -214,13 +214,13 @@ namespace Cobit {
     function ReadData(cmd: string) {
         let i: number = 0;
         let tempStr: string = "     ";
-        while (tempStr[0] != 'S' && tempStr[4] != 'P' && i < 10) {
+        while ((tempStr[0] != 'S' || tempStr[4] != 'P') && i < 10) {
             serial.writeString(cmd);
-            basic.pause(10)
+            basic.pause(20*(i+1))
             tempStr = serial.readString();
             i++;
         }
-        if (tempStr[0] != 'S' && tempStr[4] != 'P') { return "000"; }
+        if (tempStr[0] != 'S' || tempStr[4] != 'P') { return "000"; }
 
         //Remove S and P characters from the string.
         tempStr = tempStr.replace("S", "");
