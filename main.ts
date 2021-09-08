@@ -1,5 +1,5 @@
 // Microbit communicates with Cobit
-// Write: S + SensorAddress + Data + ... + P --> Waiting to receive data --> SP
+// Write: S + SensorAddress + Data + ... + P --> Wait for an ACK signal --> SP
 // Read : S + SensorAddress + Data + ... + P --> Waiting to receive data --> S + Data + P
 
 /********SensorAddress*******/
@@ -202,6 +202,7 @@ namespace Cobit {
     function WriteCMD(cmd: string) {
         let i: number = 0;
         let tempStr: string = "     ";
+		//The lower machine must return an acknowledgement within 540 ms or the write fails.
         while (tempStr[0] != 'S' && tempStr[1] != 'P' && i < 10) {
             serial.writeString(cmd);
             basic.pause(10*(i+1))
@@ -214,7 +215,8 @@ namespace Cobit {
     function ReadData(cmd: string) {
         let i: number = 0;
         let tempStr: string = "     ";
-        while ((tempStr[0] != 'S' || tempStr[4] != 'P') && i < 10) {
+		//The lower machine must return accurate data within 1100 ms; otherwise, the read fails.
+        while ((tempStr[0] != 'S' || tempStr[4] != 'P') && i < 10) {     
             serial.writeString(cmd);
             basic.pause(20*(i+1))
             tempStr = serial.readString();
